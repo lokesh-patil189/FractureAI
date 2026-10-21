@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BoneAI report — {{ analysis.original_name }}</title>
+  <style>
+    :root{color-scheme:light;--ink:#17324d;--muted:#718396;--line:#dce6ee;--blue:#176caa;--pale:#f3f8fb}
+    *{box-sizing:border-box}
+    body{margin:0;background:#eef3f7;color:var(--ink);font:14px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+    .toolbar{position:sticky;top:0;z-index:3;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px max(20px,calc((100vw - 900px)/2));background:#08223b;color:#fff}
+    .brand{font-weight:800;letter-spacing:-.04em;font-size:17px}.brand span{color:#87d9f4}
+    .toolbar-actions{display:flex;gap:8px}
+    button,.back{min-height:36px;padding:0 13px;border:1px solid rgba(255,255,255,.23);border-radius:8px;color:#fff;background:rgba(255,255,255,.08);font:inherit;font-size:11px;font-weight:700;text-decoration:none;cursor:pointer}
+    button:hover,.back:hover{background:rgba(255,255,255,.16)}
+    main{max-width:900px;margin:28px auto;padding:0 18px 36px}
+    .report-card{padding:30px;border:1px solid var(--line);border-radius:15px;background:#fff;box-shadow:0 12px 35px rgba(20,47,74,.08)}
+    .report-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;padding-bottom:19px;border-bottom:1px solid var(--line)}
+    .eyebrow{color:#5483a4;font-size:9px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
+    h1{margin:6px 0 3px;font-size:26px;letter-spacing:-.04em;line-height:1.2}
+    .filename{margin:0;color:var(--muted);font-size:11px;overflow-wrap:anywhere}
+    .record-id{padding:7px 9px;border:1px solid var(--line);border-radius:7px;background:#fbfdfe;color:#71869a;font-size:9px;white-space:nowrap}
+    .status{margin:18px 0 16px;padding:13px 15px;border:1px solid #ecdcb8;border-radius:9px;background:#fffbf2}
+    .status.completed{border-color:#d2e9df;background:#f3fbf7}
+    .status.error{border-color:#f0d4d6;background:#fff5f5}
+    .status strong{display:block;font-size:12px}.status p{margin:4px 0 0;color:#718496;font-size:10px}
+    .content-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(220px,.95fr);gap:18px;align-items:start}
+    .image-wrap{min-height:260px;display:grid;place-items:center;overflow:hidden;border-radius:9px;background:#081b2e}
+    .image-wrap img{display:block;width:100%;max-height:460px;object-fit:contain}
+    .image-caption{margin-top:7px;color:#8192a0;font-size:9px}
+    .details{border:1px solid var(--line);border-radius:10px;overflow:hidden}
+    .details h2{margin:0;padding:11px 13px;border-bottom:1px solid var(--line);background:#f7fafc;font-size:12px}
+    .detail-row{display:flex;justify-content:space-between;gap:14px;padding:10px 13px;border-bottom:1px solid #edf1f4;font-size:10px}
+    .detail-row:last-child{border-bottom:0}.detail-row span{color:#8392a0}.detail-row b{text-align:right;color:#3d5b74;font-weight:700}
+    .note-card{margin-top:14px;padding:12px 13px;border:1px solid #deebf2;border-radius:9px;background:#f4f9fc}
+    .note-card h3{margin:0 0 5px;color:#486b85;font-size:10px}.note-card p{margin:0;color:#6f8495;font-size:10px;white-space:pre-wrap;overflow-wrap:anywhere}
+    .disclaimer{margin-top:19px;padding:13px 14px;border-left:3px solid #5aa4c7;border-radius:0 8px 8px 0;background:#eff7fb;color:#637e91;font-size:9px;line-height:1.65}
+    .disclaimer strong{color:#385c75}
+    .report-footer{display:flex;justify-content:space-between;gap:12px;margin-top:18px;padding-top:11px;border-top:1px solid var(--line);color:#92a0ac;font-size:8px}
+    @media(max-width:650px){.toolbar{padding:10px 13px}.toolbar-actions{gap:5px}button,.back{min-height:32px;padding:0 8px;font-size:9px}main{margin:14px auto;padding:0 10px 20px}.report-card{padding:17px}.report-head{display:block} .record-id{display:inline-block;margin-top:10px}.content-grid{grid-template-columns:1fr}.image-wrap{min-height:200px}.report-footer{display:block}.report-footer span{display:block;margin:3px 0}}
+    @media print{@page{size:auto;margin:14mm}.toolbar{display:none!important}body{background:#fff;font-size:11px}main{max-width:none;margin:0;padding:0}.report-card{padding:0;border:0;border-radius:0;box-shadow:none}.image-wrap{min-height:180px;max-height:360px;break-inside:avoid}.image-wrap img{max-height:360px}.details,.note-card,.disclaimer{break-inside:avoid}.status{print-color-adjust:exact;-webkit-print-color-adjust:exact}.disclaimer,.status,.details h2{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+  </style>
+</head>
+<body>
+  <header class="toolbar"><div class="brand">Bone<span>AI</span> <small style="font-size:9px;font-weight:500;color:#a7bfd0;letter-spacing:0"> · review report</small></div><div class="toolbar-actions"><a class="back" href="/">Back to BoneAI</a><button type="button" onclick="window.print()">Print / Save PDF</button></div></header>
+  <main>
+    <article class="report-card">
+      <div class="report-head"><div><div class="eyebrow">Educational screening record</div><h1>Analysis review</h1><p class="filename">{{ analysis.original_name }}</p></div><div class="record-id">Record #{{ analysis.id }}</div></div>
+      {% if analysis.status == 'completed' %}
+        {% if analysis.label == 'fracture_suspected' %}<div class="status"><strong>Suspected fracture</strong><p>Model output only — not a diagnosis. A qualified professional must review the original image.</p></div>
+        {% else %}<div class="status completed"><strong>No fracture detected</strong><p>The model did not flag a fracture. This is not an all-clear or a clinical conclusion.</p></div>{% endif %}
+      {% elif analysis.status == 'model_unavailable' %}<div class="status"><strong>Model not connected</strong><p>The image was uploaded and preprocessed; no prediction was generated.</p></div>
+      {% else %}<div class="status error"><strong>Inference unavailable</strong><p>{{ analysis.message }}</p></div>{% endif %}
+      <div class="content-grid">
+        <section><div class="image-wrap"><img src="{{ analysis.image_url }}" alt="Uploaded X-ray image"></div><div class="image-caption">Original uploaded image · {{ analysis.image_width }} × {{ analysis.image_height }} pixels</div></section>
+        <section>
+          <div class="details"><h2>Analysis details</h2>
+            <div class="detail-row"><span>Created (UTC)</span><b>{{ analysis.created_at }}</b></div>
+            <div class="detail-row"><span>Workflow status</span><b>{{ analysis.status.replace('_', ' ')|title }}</b></div>
+            <div class="detail-row"><span>Classification</span><b>{% if analysis.label == 'fracture_suspected' %}Suspected fracture{% elif analysis.label == 'no_fracture_detected' %}No fracture detected{% else %}Not available{% endif %}</b></div>
+            <div class="detail-row"><span>Model confidence</span><b>{% if analysis.confidence is not none %}{{ '%.1f'|format(analysis.confidence * 100) }}%{% else %}Not available{% endif %}</b></div>
+            <div class="detail-row"><span>Model version</span><b>{{ analysis.model_version or 'Not configured' }}</b></div>
+            <div class="detail-row"><span>Localization</span><b>{% if analysis.box %}Model region available{% else %}Not provided{% endif %}</b></div>
+            {% if analysis.box %}<div class="detail-row"><span>Normalized box</span><b>{{ analysis.box }}</b></div>{% endif %}
+          </div>
+          {% if analysis.review_label or analysis.review_note %}<div class="note-card"><h3>Human reviewer feedback (separate from model output)</h3><p>{% if analysis.review_label %}{{ analysis.review_label.replace('_', ' ')|title }}{% endif %}{% if analysis.review_label and analysis.review_note %} — {% endif %}{{ analysis.review_note or '' }}</p></div>{% endif %}
+        </section>
+      </div>
+      <div class="disclaimer"><strong>Important:</strong> BoneAI is an educational research prototype, not a medical device. This report does not provide a diagnosis or treatment recommendation. Model output may be wrong or incomplete and must not be used to make care decisions. Consult a qualified medical professional.</div>
+      <div class="report-footer"><span>Generated {{ generated_at }} (UTC)</span><span>BoneAI · Final-year engineering project prototype</span></div>
+    </article>
+  </main>
+</body>
+</html>
